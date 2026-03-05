@@ -7,14 +7,14 @@ on:
 
 jobs:
   monitor-baseline-project:
-    if: ${{ github.head_ref != 'eap/kotlin' }}
+    if: ${{ github.repository_owner == 'hivemq' && github.head_ref != 'eap/kotlin' }}
     uses: ./.github/workflows/snyk-push.yml
     with:
       github_ref: ${{ github.base_ref }}
     secrets: inherit
 
   scan-for-new-issues:
-    if: ${{ github.head_ref != 'eap/kotlin' }}
+    if: ${{ github.repository_owner == 'hivemq' && github.head_ref != 'eap/kotlin' }}
     runs-on: ubuntu-latest
     needs: monitor-baseline-project
 
