@@ -6,6 +6,7 @@ on:
 
 jobs:
   run-snyk-monitor:
+    if: github.repository == 'hivemq/hivemq-mqtt-client'
     runs-on: ubuntu-latest
     environment: snyk-monitor-releases
 
