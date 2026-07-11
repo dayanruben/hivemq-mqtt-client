@@ -52,7 +52,7 @@ allprojects {
     plugins.withId("java") {
         java {
             toolchain {
-                languageVersion = JavaLanguageVersion.of(21)
+                languageVersion = JavaLanguageVersion.of(25)
             }
         }
         tasks.compileJava {
@@ -82,9 +82,9 @@ dependencies {
     implementation(libs.netty.handler)
     implementation(libs.netty.transport)
     implementation(libs.jctools)
-    implementation(libs.jetbrains.annotations)
     implementation(libs.dagger)
 
+    compileOnlyApi(libs.jetbrains.annotations)
     compileOnly(libs.slf4j.api)
 
     annotationProcessor(libs.dagger.compiler)
@@ -119,6 +119,9 @@ allprojects {
             maxHeapSize = "1g"
             maxParallelForks = 1.coerceAtLeast(Runtime.getRuntime().availableProcessors() / 2)
             jvmArgs("-XX:+UseParallelGC")
+            // Netty uses sun.misc.Unsafe and native libraries; silence the Java 24+ warnings.
+            // See https://netty.io/wiki/java-24-and-sun.misc.unsafe.html
+            jvmArgs("--sun-misc-unsafe-memory-access=allow", "--enable-native-access=ALL-UNNAMED")
         }
     }
 }
@@ -130,6 +133,9 @@ dependencies {
     testImplementation(libs.bouncycastle.pkix)
     testImplementation(libs.bouncycastle.prov)
     testImplementation(libs.paho.client)
+    // EqualsVerifier reflects on @NotNull/@Nullable at runtime; compileOnlyApi is compile-only,
+    // so the annotations must be added to the test runtime classpath explicitly.
+    testRuntimeOnly(libs.jetbrains.annotations)
     testRuntimeOnly(libs.slf4j.simple)
 }
 
@@ -146,6 +152,12 @@ oci {
 sourceSets.create("integrationTest") {
     compileClasspath += sourceSets.main.get().output
     runtimeClasspath += sourceSets.main.get().output
+}
+
+tasks.named<JavaCompile>("compileIntegrationTestJava") {
+    // The integration tests bundle a HiveMQ extension that is loaded inside the HiveMQ CE container (Java 21).
+    // Compile to Java 21 bytecode so the container can load it, independent of the (Java 25) build toolchain.
+    options.release.set(21)
 }
 
 val integrationTestImplementation: Configuration by configurations.getting {
@@ -174,6 +186,9 @@ val integrationTest by tasks.registering(Test::class) {
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
     classpath = sourceSets["integrationTest"].runtimeClasspath
     shouldRunAfter(tasks.test)
+    // Netty uses sun.misc.Unsafe and native libraries; silence the Java 24+ warnings.
+    // See https://netty.io/wiki/java-24-and-sun.misc.unsafe.html
+    jvmArgs("--sun-misc-unsafe-memory-access=allow", "--enable-native-access=ALL-UNNAMED")
 }
 
 oci.of(integrationTest) {
@@ -237,17 +252,9 @@ tasks.shadowJar {
     relocate("META-INF/native/libnetty", "META-INF/native/lib${shadeFilePrefix}netty")
     exclude("META-INF/io.netty.versions.properties")
     relocate("org.jctools", "${shadePrefix}org.jctools")
-    relocate("org.jetbrains", "${shadePrefix}org.jetbrains")
     relocate("dagger", "${shadePrefix}dagger")
     exclude("META-INF/com.google.dagger_dagger.version")
     relocate("javax.inject", "${shadePrefix}javax.inject")
-    // Drops the relocated org.jetbrains:annotations kotlin_module
-    // (META-INF/annotations.shadow.kotlin_module) from the shaded jar and silences the
-    // shadow 9.5.0+ DuplicatesStrategy=EXCLUDE warning it triggers. Safe to remove: the file
-    // only describes the shaded-internal org.jetbrains.annotations package (nothing compiles
-    // Kotlin against it) and those annotation types carry no top-level/internal/multifile
-    // declarations, so no Kotlin compiler or runtime ever reads it.
-    exclude("META-INF/*.kotlin_module")
 
     minimize()
 }

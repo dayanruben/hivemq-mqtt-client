@@ -4,7 +4,7 @@
 
 # HiveMQ MQTT Client
 
-[![Maven Central](https://maven-badges.sml.io/maven-central/com.hivemq/hivemq-mqtt-client/badge.svg)](https://central.sonatype.com/artifact/com.hivemq/hivemq-mqtt-client)
+[![Maven Central](https://maven-badges.sml.io/maven-central/com.hivemq/hivemq-mqtt-client/badge.svg)](https://maven-badges.sml.io/sonatype-central/com.hivemq/hivemq-mqtt-client)
 [![javadoc](https://javadoc.io/badge2/com.hivemq/hivemq-mqtt-client/javadoc.svg)](https://javadoc.io/doc/com.hivemq/hivemq-mqtt-client)
 [![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/hivemq/hivemq-mqtt-client/.github/workflows/check.yml?branch=master)](https://img.shields.io/github/actions/workflow/status/hivemq/hivemq-mqtt-client/.github/workflows/check.yml?branch=master)
 
@@ -99,7 +99,7 @@ If you use Gradle, just include the following inside your `build.gradle(.kts)` f
 
 ```kotlin
 dependencies {
-  implementation("com.hivemq:hivemq-mqtt-client:1.3.16")
+  implementation("com.hivemq:hivemq-mqtt-client:1.3.17")
 }
 ```
 
@@ -107,10 +107,10 @@ For optional features you can choose to include additional modules:
 
 ```kotlin
 dependencies {
-  implementation(platform("com.hivemq:hivemq-mqtt-client-websocket:1.3.16"))
-  implementation(platform("com.hivemq:hivemq-mqtt-client-proxy:1.3.16"))
-  implementation(platform("com.hivemq:hivemq-mqtt-client-epoll:1.3.16"))
-  implementation("com.hivemq:hivemq-mqtt-client-reactor:1.3.16")
+  implementation(platform("com.hivemq:hivemq-mqtt-client-websocket:1.3.17"))
+  implementation(platform("com.hivemq:hivemq-mqtt-client-proxy:1.3.17"))
+  implementation(platform("com.hivemq:hivemq-mqtt-client-epoll:1.3.17"))
+  implementation("com.hivemq:hivemq-mqtt-client-reactor:1.3.17")
 }
 ```
 
@@ -125,7 +125,7 @@ If you use Maven, just include the following inside your `pom.xml` file.
         <dependency>
             <groupId>com.hivemq</groupId>
             <artifactId>hivemq-mqtt-client</artifactId>
-            <version>1.3.16</version>
+            <version>1.3.17</version>
         </dependency>
     </dependencies>
     ...
@@ -154,7 +154,7 @@ For optional features you can choose to include additional modules:
         <dependency>
             <groupId>com.hivemq</groupId>
             <artifactId>hivemq-mqtt-client-websocket</artifactId>
-            <version>1.3.16</version>
+            <version>1.3.17</version>
             <type>pom</type>
         </dependency>
     </dependencies>
@@ -162,7 +162,7 @@ For optional features you can choose to include additional modules:
         <dependency>
             <groupId>com.hivemq</groupId>
             <artifactId>hivemq-mqtt-client-proxy</artifactId>
-            <version>1.3.16</version>
+            <version>1.3.17</version>
             <type>pom</type>
         </dependency>
     </dependencies>
@@ -170,7 +170,7 @@ For optional features you can choose to include additional modules:
         <dependency>
             <groupId>com.hivemq</groupId>
             <artifactId>hivemq-mqtt-client-epoll</artifactId>
-            <version>1.3.16</version>
+            <version>1.3.17</version>
             <type>pom</type>
         </dependency>
     </dependencies>
@@ -178,7 +178,7 @@ For optional features you can choose to include additional modules:
         <dependency>
             <groupId>com.hivemq</groupId>
             <artifactId>hivemq-mqtt-client-reactor</artifactId>
-            <version>1.3.16</version>
+            <version>1.3.17</version>
         </dependency>
     </dependencies>
     ...
@@ -196,7 +196,7 @@ To use the shaded version just append `-shaded` to the artifact name.
 
 ```kotlin
 dependencies {
-  implementation("com.hivemq:hivemq-mqtt-client-shaded:1.3.16")
+  implementation("com.hivemq:hivemq-mqtt-client-shaded:1.3.17")
 }
 ```
 
@@ -209,7 +209,7 @@ dependencies {
         <dependency>
             <groupId>com.hivemq</groupId>
             <artifactId>hivemq-mqtt-client-shaded</artifactId>
-            <version>1.3.16</version>
+            <version>1.3.17</version>
         </dependency>
     </dependencies>
     ...
