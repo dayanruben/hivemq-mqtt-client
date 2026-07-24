@@ -18,21 +18,20 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           path: hivemq-mqtt-client
 
       - name: Setup Java
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5
         with:
           distribution: temurin
           java-version: |
             8
-            11
-            21
+            25
 
       - name: Check for new issues
-        uses: hivemq/hivemq-snyk-composite-action@87155e0bc5cddd95ad2d4d184952bb2dbb9d225f # v2
+        uses: hivemq/hivemq-snyk-composite-action@1c18f39e10e7b1d35fa121b91b99c0445b7a4a56 # v2
         with:
           snyk-args: --org=hivemq-mqtt-client --project-name=hivemq-mqtt-client --configuration-matching=^runtimeClasspath$ -d hivemq-mqtt-client
           snyk-token: ${{ secrets.SNYK_TOKEN }}
